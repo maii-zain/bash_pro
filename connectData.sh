@@ -1,32 +1,40 @@
 #!/bin/bash
 
 read -p "Enter database you want to connect with: " connect_db
+
+
+if [[ "$connect_db" == *.* ]]; then
+    echo -e "\e[31mDatabase name cannot contain '.' (dot)\e[0m"
+    source createDatabase.sh
+    exit 1
+fi
+
 export connect_db
 
-if [ -d db/$connect_db ]; then
+if [ -d db/"$connect_db" ]; then
     select vr in "create table" "remove table" "use table" "show table" "go to database menu" "exit"; do
         case $REPLY in
-            1)	clear
+            1)  clear
                 source ./createTable.sh
                 ;;
             2)
-            	clear
+                clear
                 source ./delete_table.sh
                 ;;
             3)
-            	clear
-               source ./table-menu.sh
+                clear
+                source ./table-menu.sh
                 ;;
             4)
-            	clear
+                clear
                 source ./list_tables.sh 
                 ;;
             5)
-            	clear
+                clear
                 source ./createDatabase.sh
                 ;;
             6)
-            	clear
+                clear
                 break
                 ;;
             *)
@@ -35,7 +43,7 @@ if [ -d db/$connect_db ]; then
         esac
     done
 else
-    echo -e "\e[31m<<<<<<<<<<<<<<< Database enterd not found >>>>>>>>>>>>>>>\e[0m"
+    echo -e "\e[31m<<<<<<<<<<<<<<< Database entered not found >>>>>>>>>>>>>>>\e[0m"
     source createDatabase.sh
 fi
 
